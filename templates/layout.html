@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} Flask | Master en Python {% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
+</head>
+<body>
+    
+    <ul>
+        <li>
+            <a href="/">Inicio</a>
+        </li>
+        <li>
+            <a href="{{url_for('informacion')}}">Información</a>
+        </li>
+        <li>
+            <a href="{{url_for('contacto')}}">Contacto</a>
+        </li>
+        <li>
+            <a href="{{url_for('lenguajes')}}">Lenguajes de programación</a>
+        </li>
+    </ul>
+    <hr>
+    <div id="content">
+        {% block content %}
+
+        {% endblock %}
+    </div>
+    <footer>
+        <p>El Gran Nachowski &copy; peleándose con Flask | {{ fecha.day}}/{{ fecha.month}}/{{ fecha.year }}</p>
+    </footer>
+</body>
+</html>
