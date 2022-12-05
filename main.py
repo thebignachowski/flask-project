@@ -1,7 +1,16 @@
-from flask import Flask, redirect, url_for, render_template
+from flask import Flask, redirect, url_for, render_template, request
 from datetime import datetime
+from flask_mysqldb import MySQL
 
 app = Flask(__name__)
+
+# Conexión DB
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = 'proyectoflask'
+
+mysql = MySQL(app)
 
 
 @app.context_processor
@@ -46,6 +55,23 @@ def contacto(redireccion=None):
 @app.route('/lenguajes-de-programacion')
 def lenguajes():
     return render_template('lenguajes.html')
+
+
+@app.route('/crear-coche', methods=['GET', 'POST'])
+def crear_coche():
+    if request.method == 'POST':
+        marca = request.form['marca']
+        modelo = request.form['modelo']
+        precio = request.form['precio']
+        local = request.form['local']
+
+        cursor = mysql.connection.cursor()
+        cursor.execute("INSERT INTO coches VALUES(NULL, %s, %s, %s, %s)",
+                       (marca, modelo, precio, local))
+        cursor.connection.commit()
+        return redirect(url_for('index'))
+
+    return render_template('crear_coche.html')
 
 
 if __name__ == '__main__':
